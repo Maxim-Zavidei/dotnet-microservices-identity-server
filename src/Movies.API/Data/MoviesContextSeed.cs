@@ -91,7 +91,7 @@ public class MoviesContextSeed
                         Owner = "bob"
                     }
                 };
-            context.Movies.AddRangeAsync(movies);
+            await context.Movies.AddRangeAsync(movies);
             await context.SaveChangesAsync();
         }
     }

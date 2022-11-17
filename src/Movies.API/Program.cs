@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Movies.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationContext>(opt =>
     opt.UseInMemoryDatabase("Movies")
 );
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", opt =>
+    {
+        opt.Authority = "https://localhost:5005";
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false
+        };
+    });
 
 var app = builder.Build();
 
@@ -31,9 +42,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

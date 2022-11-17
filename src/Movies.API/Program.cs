@@ -25,6 +25,12 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "movieClient"));
+});
+
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

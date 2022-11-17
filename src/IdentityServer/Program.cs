@@ -4,10 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityServer()
     .AddInMemoryClients(Config.Clients)
-    .AddInMemoryIdentityResources(Config.IdentityResources)
-    .AddInMemoryApiResources(Config.ApiResources)
+    //.AddInMemoryIdentityResources(Config.IdentityResources)
+    //.AddInMemoryApiResources(Config.ApiResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddTestUsers(Config.TestUsers)
+    // /.AddTestUsers(Config.TestUsers)
     .AddDeveloperSigningCredential();
 
 builder.Services.AddAuthorization();

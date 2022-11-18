@@ -1,5 +1,9 @@
+using System.Security.Claims;
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Test;
+using IdentityModel;
+using static Duende.IdentityServer.Models.IdentityResources;
 
 namespace IdentityServer;
 
@@ -15,6 +19,30 @@ public class Config
                 new Secret("secret".Sha256())
             },
             AllowedScopes = { "movieAPI" }
+        },
+        new Client
+        {
+            ClientId = "movies_mvc_client",
+            ClientName = "Movies MVC Web App",
+            AllowedGrantTypes = GrantTypes.Code,
+            AllowRememberConsent = false,
+            RedirectUris = new List<string>
+            {
+                "https://localhost:5002/signin-oidc"
+            },
+            PostLogoutRedirectUris = new List<string>
+            {
+                "https://localhost:5002/signout-callback-oidc"
+            },
+            ClientSecrets = new List<Secret>
+            {
+                new Secret("secret".Sha256())
+            },
+            AllowedScopes = new List<string>
+            {
+                IdentityServerConstants.StandardScopes.OpenId,
+                IdentityServerConstants.StandardScopes.Profile
+            }
         }
     };
 
@@ -30,11 +58,22 @@ public class Config
 
     public static IEnumerable<IdentityResource> IdentityResources => new IdentityResource[]
     {
-
+        new OpenId(),
+        new Profile()
     };
 
     public static List<TestUser> TestUsers => new()
     {
-
+        new TestUser
+        {
+            SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
+            Username = "username",
+            Password = "password",
+            Claims = new List<Claim>
+            {
+                new Claim(JwtClaimTypes.GivenName, "username"),
+                new Claim(JwtClaimTypes.FamilyName, "familyname"),
+            }
+        }
     };
 }

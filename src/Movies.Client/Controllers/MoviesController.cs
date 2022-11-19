@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Movies.Client.ApiServices;
 using Movies.Client.Models;
 
 namespace Movies.Client
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly IMovieApiService movieApiService;

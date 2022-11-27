@@ -1,4 +1,5 @@
 using IdentityServer;
+using IdentityServerHost;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddIdentityServer()
     .AddInMemoryIdentityResources(Config.IdentityResources)
     //.AddInMemoryApiResources(Config.ApiResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddTestUsers(Config.TestUsers)
+    .AddTestUsers(TestUsers.Users)
     .AddDeveloperSigningCredential();
 
 builder.Services.AddAuthorization();

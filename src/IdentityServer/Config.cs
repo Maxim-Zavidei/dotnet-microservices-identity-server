@@ -3,6 +3,7 @@ using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Test;
 using IdentityModel;
+
 using static Duende.IdentityServer.Models.IdentityResources;
 
 namespace IdentityServer;
@@ -13,18 +14,10 @@ public class Config
     {
         new Client
         {
-            ClientId = "movieClient",
-            AllowedGrantTypes = GrantTypes.ClientCredentials,
-            ClientSecrets = {
-                new Secret("secret".Sha256())
-            },
-            AllowedScopes = { "movieAPI" }
-        },
-        new Client
-        {
             ClientId = "movies_mvc_client",
             ClientName = "Movies MVC Web App",
-            AllowedGrantTypes = GrantTypes.Code,
+            AllowedGrantTypes = GrantTypes.Hybrid,
+            RequirePkce = false,
             AllowRememberConsent = false,
             RedirectUris = new List<string>
             {
@@ -41,7 +34,10 @@ public class Config
             AllowedScopes = new List<string>
             {
                 IdentityServerConstants.StandardScopes.OpenId,
-                IdentityServerConstants.StandardScopes.Profile
+                IdentityServerConstants.StandardScopes.Profile,
+                IdentityServerConstants.StandardScopes.Address,
+                IdentityServerConstants.StandardScopes.Email,
+                "movieAPI"
             }
         }
     };
@@ -59,7 +55,9 @@ public class Config
     public static IEnumerable<IdentityResource> IdentityResources => new IdentityResource[]
     {
         new OpenId(),
-        new Profile()
+        new Profile(),
+        new Address(),
+        new Email()
     };
 
     public static List<TestUser> TestUsers => new()

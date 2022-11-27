@@ -1,5 +1,8 @@
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Movies.Client.ApiServices;
 using Movies.Client.HttpHandlers;
@@ -31,9 +34,18 @@ builder.Services
         opt.Scope.Add("address");
         opt.Scope.Add("email");
         opt.Scope.Add("movieAPI");
+        opt.Scope.Add("roles");
+
+        opt.ClaimActions.MapUniqueJsonKey("role", "role");
 
         opt.SaveTokens = true;
         opt.GetClaimsFromUserInfoEndpoint = true;
+
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            NameClaimType = JwtClaimTypes.GivenName,
+            RoleClaimType = JwtClaimTypes.Role
+        };
     });
 
 // Intercepts http requests

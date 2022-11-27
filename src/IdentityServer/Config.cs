@@ -57,7 +57,12 @@ public class Config
         new OpenId(),
         new Profile(),
         new Address(),
-        new Email()
+        new Email(),
+        new IdentityResource(
+            "roles",
+            "Your role(s)",
+            new List<string>() { "role" }
+        )
     };
 
     public static List<TestUser> TestUsers => new()

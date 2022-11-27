@@ -1,5 +1,4 @@
 using System.Text.Json;
-using IdentityModel.Client;
 using Movies.Client.Models;
 
 namespace Movies.Client.ApiServices;
@@ -30,36 +29,14 @@ public class MovieApiService : IMovieApiService
 
     public async Task<IEnumerable<Movie>> GetMovies()
     {
-        var apiClientCredentials = new ClientCredentialsTokenRequest
-        {
-            Address = "https://localhost:5005/conect/token",
-            ClientId = "movieClient",
-            ClientSecret = "secret",
-            Scope = "movieAPI"
-        };
+        var httpClient = httpClientFactory.CreateClient("MovieAPIClient");
 
-        var client = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/movies/");
+        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
-        var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5005");
-        if (disco.IsError)
-        {
-            return null;
-        }
-
-        var tokenResponse = await client.RequestClientCredentialsTokenAsync(apiClientCredentials);
-        if (tokenResponse.IsError)
-        {
-            return null;
-        }
-
-        var apiClient = new HttpClient();
-        client.SetBearerToken(tokenResponse.AccessToken);
-
-        var response = await apiClient.GetAsync("https://localhost:5001/api/movies");
         response.EnsureSuccessStatusCode();
 
-        string content = await response.Content.ReadAsStringAsync();
-
+        var content = await response.Content.ReadAsStringAsync();
         List<Movie> movieList = JsonSerializer.Deserialize<List<Movie>>(content);
 
         return movieList;

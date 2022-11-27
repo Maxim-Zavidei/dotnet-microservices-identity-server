@@ -7,7 +7,7 @@ A proof of concept security architecture for a fictional movie provider system, 
 </p>
 
 # Details
-The goal of the project is to demonstrate a possible solution for securing a ASP.NET based microservices application with IdentityServer4 using OAuth2 and OpenID protocols. The backend of the project consists of a movies API, a Ocelot gateway and the IdentityServer. There is an example movies MVC client for the frontend as well.
+The goal of the project is to demonstrate a possible solution for securing an ASP.NET based microservices application with IdentityServer4 using OAuth2 and OpenID protocols. The backend of the project consists of a movies API, a Ocelot gateway and the IdentityServer. There is an example movies MVC client for the frontend as well.
 
 # Skills and Technical Competences 
 * Building IdentityServer4 Authentication Microservice

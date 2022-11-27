@@ -83,6 +83,13 @@ public class MoviesController : Controller
         return View();
     }
 
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> OnlyAdmin()
+    {
+        var userInfo = await movieApiService.GetUserInfo();
+        return View(userInfo);
+    }
+
     // GET: Movies/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
